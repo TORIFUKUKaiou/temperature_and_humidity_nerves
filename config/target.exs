@@ -58,7 +58,26 @@ config :vintage_net,
        type: VintageNetEthernet,
        ipv4: %{method: :dhcp}
      }},
-    {"wlan0", %{type: VintageNetWiFi}}
+    {"wlan0",
+     %{
+       type: VintageNetWiFi,
+       vintage_net_wifi: %{
+         networks: [
+           %{
+             key_mgmt: :wpa_psk,
+             ssid: System.get_env("NERVES_NETWORK_SSID"),
+             psk: System.get_env("NERVES_NETWORK_PSK")
+           }
+         ]
+       },
+       ipv4: %{
+         method: :static,
+         address: "192.168.1.200",
+         prefix_length: 24,
+         gateway: "192.168.1.1",
+         name_servers: ["8.8.8.8", "8.8.4.4"]
+       }
+     }}
   ]
 
 config :mdns_lite,
