@@ -1,7 +1,7 @@
 defmodule TemperatureAndHumidityNerves.Worker do
   require Logger
 
-  @name "awesome"
+  @url "https://aht20.torifuku-kaiou.tokyo/values"
   @headers [{"Content-Type", "application/json"}]
 
   def run do
@@ -9,21 +9,12 @@ defmodule TemperatureAndHumidityNerves.Worker do
 
     inspect({temperature, humidity}) |> Logger.debug()
 
-    post_temperature(temperature)
-    post_humidity(humidity)
+    post(temperature, humidity)
   end
 
-  defp post_temperature(value) do
-    post(value, "https://phx.japaneast.cloudapp.azure.com/temperatures")
-  end
-
-  defp post_humidity(value) do
-    post(value, "https://phx.japaneast.cloudapp.azure.com/humidities")
-  end
-
-  defp post(value, url) do
+  defp post(temperature, humidity) do
     time = Timex.now() |> Timex.to_unix()
-    json = Jason.encode!(%{value: %{name: @name, value: value, time: time}})
-    HTTPoison.post(url, json, @headers)
+    json = Jason.encode!(%{value: %{temperature: temperature, humidity: humidity, time: time}})
+    HTTPoison.post(@url, json, @headers)
   end
 end
