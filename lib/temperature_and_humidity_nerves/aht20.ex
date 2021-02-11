@@ -29,11 +29,8 @@ defmodule TemperatureAndHumidityNerves.Aht20 do
     ret
   end
 
-  defp convert(<<_, h1, h2, ht3, t4, t5, _>>) do
-    raw_humi = h1 <<< 12 ||| h2 <<< 4 ||| ht3 >>> 4
+  defp convert(<<_, raw_humi::20, raw_temp::20, _>>) do
     humi = Float.round(raw_humi / @two_pow_20 * 100.0, 1)
-
-    raw_temp = (ht3 &&& 0x0F) <<< 16 ||| t4 <<< 8 ||| t5
     temp = Float.round(raw_temp / @two_pow_20 * 200.0 - 50.0, 1)
 
     {temp, humi}
