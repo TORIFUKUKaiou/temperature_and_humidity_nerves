@@ -1,7 +1,7 @@
 defmodule TemperatureAndHumidityNerves.Worker do
   require Logger
 
-  @url "https://aht20.torifuku-kaiou.tokyo/values"
+  @url "https://aht20.torifuku-kaiou.tokyo/api/values"
   @headers [{"Content-Type", "application/json"}]
 
   def run do
