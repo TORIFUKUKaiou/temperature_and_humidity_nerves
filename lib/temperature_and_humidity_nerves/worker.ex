@@ -10,7 +10,7 @@ defmodule TemperatureAndHumidityNerves.Worker do
   def run do
     {:ok, {temperature, humidity}} = TemperatureAndHumidityNerves.Aht20.read()
 
-    inspect({temperature, humidity}) |> Logger.debug()
+    inspect({temperature, humidity}) |> Logger.info()
 
     post(temperature, humidity)
   end
